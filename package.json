@@ -1,7 +1,7 @@
 {
-  "name": "typescript-template",
-  "version": "1.0.0",
-  "description": "A Template for a generic TypeScript project",
+  "name": "tank-game",
+  "version": "0.0.1",
+  "description": "An attempt at a Browsergame",
   "main": "build/index.js",
   "scripts": {
     "build": "npx tsc",

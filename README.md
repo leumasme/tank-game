@@ -1,1 +1,1 @@
-typescript-template
+There is no readme (yet?). I'm sorry.
