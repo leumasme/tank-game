@@ -1,0 +1,21 @@
+{
+  "name": "client",
+  "version": "0.0.1",
+  "description": "Client of the Tank browsergame",
+  "scripts": {
+    "build": "vite build --config=vite.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leumasme/tank-game.git"
+  },
+  "author": "Temm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leumasme/tank-game/issues"
+  },
+  "homepage": "https://github.com/leumasme/tank-game#readme",
+  "dependencies": {
+    "vite": "^2.6.14"
+  }
+}
