@@ -1,12 +1,14 @@
-const { resolve } = require('path')
-const { defineConfig } = require('vite')
-
-module.exports = defineConfig({
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'src/index.html'),
-      }
-    }
-  }
-})
+export default {
+    root: 'src',
+    build: {
+      outDir: '../build',
+      assetsDir: './',
+      emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          entryFileNames: '[name].js',
+          assetFileNames: '[name][extname]',
+        },
+      },
+    },
+  };
