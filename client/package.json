@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/leumasme/tank-game#readme",
   "dependencies": {
+    "@types/three": "^0.134.0",
     "vite": "^2.6.14"
   }
 }
