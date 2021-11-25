@@ -1,8 +1,8 @@
 import Koa from "koa"
 import serve from "koa-static";
-import * as d from "path"
+import { resolve } from "path"
 const app = new Koa();
 
-app.use(serve(d.resolve(__dirname + "/../../client/build")));
+app.use(serve(resolve(__dirname + "/../../client/build")));
 
 export default app;
