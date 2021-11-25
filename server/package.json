@@ -2,9 +2,9 @@
   "name": "server",
   "version": "0.0.1",
   "description": "Server of the Tank browsergame",
-  "devDependencies": {},
   "scripts": {
-      "build": "tsc"
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/leumasme/tank-game/issues"
   },
-  "homepage": "https://github.com/leumasme/tank-game#readme"
+  "homepage": "https://github.com/leumasme/tank-game#readme",
+  "dependencies": {
+    "@types/koa": "^2.13.4",
+    "@types/koa-static": "^4.0.2",
+    "koa": "^2.13.4",
+    "koa-static": "^5.0.0",
+    "ts-node": "^10.4.0"
+  }
 }

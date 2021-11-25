@@ -2,10 +2,9 @@
   "name": "tank-game",
   "version": "0.0.1",
   "description": "An attempt at a Browsergame",
-  "main": "build/index.js",
   "scripts": {
     "build": "echo Must build workspaces!",
-    "start": "npx tsc && node build/index.js",
+    "start": "npm start --workspaces",
     "dev": "npx tsnd --respawn --clear src/index.ts"
   },
   "author": "Temm",

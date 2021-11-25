@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Client of the Tank browsergame",
   "scripts": {
-    "build": "vite build --config=vite.conf.js"
+    "build": "vite build --config=vite.conf.js",
+    "start": ""
   },
   "repository": {
     "type": "git",
