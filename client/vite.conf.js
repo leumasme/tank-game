@@ -1,14 +1,15 @@
 export default {
-    root: 'src',
+    root: "src",
     build: {
-      outDir: '../build',
-      assetsDir: './',
+      chunkSizeWarningLimit: 1024 * 1024,
+      outDir: "../build",
+      assetsDir: "./",
       emptyOutDir: true,
       rollupOptions: {
         output: {
-          entryFileNames: '[name].js',
-          assetFileNames: '[name][extname]',
-        },
+          entryFileNames: "[name].js",
+          assetFileNames: "[name][extname]",
+        }
       },
     },
   };
