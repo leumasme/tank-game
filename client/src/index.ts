@@ -1,8 +1,9 @@
 import * as T from "three";
-import { keyStates } from "./keys"
+import { keyStates, playerControls } from "./keys"
 import { Player } from "./player";
 import { loaded } from "./resource";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { LocalPlayer } from "./localplayer";
 
 window.addEventListener("resources-loaded", () => {
     // set up
@@ -16,7 +17,8 @@ window.addEventListener("resources-loaded", () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    let mesh = new Player(loaded.tank).mesh;
+    let player = new LocalPlayer(loaded.tank.scene, playerControls[0]);
+    let mesh = player.mesh;
     console.log(mesh, mesh.position, mesh.constructor)
     mesh.position.y = 2;
     scene.add(mesh);
@@ -39,9 +41,7 @@ window.addEventListener("resources-loaded", () => {
 
         renderer.render(scene, camera);
         lastTime = time;
-        if (keyStates.FORWARD) {
-            mesh.position.z -= 0.001 * delta;
-        }
+        player.move(delta);
         requestAnimationFrame(render);
     }
 

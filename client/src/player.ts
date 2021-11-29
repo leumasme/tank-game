@@ -1,10 +1,11 @@
 import * as T from 'three';
 
 import { loaded } from "./resource";
+import { Meshable } from './typeutils';
 
 export class Player {
-    constructor(m: T.Mesh) {
+    constructor(m: Meshable) {
         this.mesh = m;
     }
-    mesh: T.Mesh;
+    mesh: Meshable;
 }
