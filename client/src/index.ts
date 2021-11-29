@@ -1,6 +1,5 @@
 import * as T from "three";
-import { keyStates, playerControls } from "./keys"
-import { Player } from "./player";
+import { playerControls } from "./keys"
 import { loaded } from "./resource";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { LocalPlayer } from "./localplayer";
@@ -19,22 +18,17 @@ window.addEventListener("resources-loaded", () => {
 
     let player = new LocalPlayer(loaded.tank.scene, playerControls[0]);
     let mesh = player.mesh;
-    console.log(mesh, mesh.position, mesh.constructor)
-    mesh.position.y = 2;
     scene.add(mesh);
 
     // fix mesh being black
     const light = new T.HemisphereLight( 0xffffbb, 0x080820, 1);
     scene.add(light);
 
-    const floor = new T.Mesh(new T.BoxGeometry(5, 1, 5), new T.MeshBasicMaterial({ color: 0xffffff }));
-    floor.position.y = -1;
-    // scene.add(floor);
-
     camera.position.y = 4;
     camera.lookAt(mesh.position);
-    let lastTime = 0;
+
     // frame renderer
+    let lastTime = 0;
     function render(time: number) {
         if (!lastTime) lastTime = time;
         const delta = time - lastTime;
@@ -51,6 +45,6 @@ window.addEventListener("resources-loaded", () => {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-
+    
     window.requestAnimationFrame(render);
 })
