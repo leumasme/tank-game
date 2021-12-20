@@ -6,13 +6,16 @@ import { LocalPlayer } from "./localplayer";
 import { distanceToFitInView } from "./renderutils";
 
 window.addEventListener("resources-loaded", () => {
-    // set up
+    // Set up the scene
     const scene = new T.Scene();
     const renderer = new T.WebGLRenderer();
+
     const environment = new RoomEnvironment();
     const pmremGenerator = new T.PMREMGenerator(renderer);
-    scene.background = new T.Color(0xbbbbbb);
     scene.environment = pmremGenerator.fromScene(environment).texture;
+    pmremGenerator.dispose();
+
+    scene.background = new T.Color(0xbbbbbb);
     const camera = new T.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
@@ -21,24 +24,25 @@ window.addEventListener("resources-loaded", () => {
     let mesh = player.mesh;
     scene.add(mesh);
 
-    // create flat ground
+    // Create ground plane
     const ground = new T.BoxGeometry(100, 0.1, 100);
     const groundMaterial = new T.MeshStandardMaterial({ color: 0x888888 });
     const groundMesh = new T.Mesh(ground, groundMaterial);
     groundMesh.position.y = -0.05;
     scene.add(groundMesh);
 
-    // fix mesh being black
+    // Add light to fix colors
     const light = new T.HemisphereLight(0xffffbb, 0x080820, 1);
     scene.add(light);
 
+    // Place camera to get scene in view
     let distance = distanceToFitInView(camera.fov, 100);
     camera.position.y = distance + 3;
     camera.near = distance - 3;
     camera.far = distance + 10;
     camera.lookAt(mesh.position);
 
-    // frame renderer
+    // Render loop
     let lastTime = 0;
     function render(time: number) {
         if (!lastTime) lastTime = time;
@@ -46,11 +50,11 @@ window.addEventListener("resources-loaded", () => {
 
         renderer.render(scene, camera);
         lastTime = time;
-        player.move(delta);
+        player.move(delta); // Process controls
         requestAnimationFrame(render);
     }
 
-    // handle window resize
+    // Handle window resize
     window.addEventListener("resize", () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
