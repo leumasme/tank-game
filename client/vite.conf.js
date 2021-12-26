@@ -4,7 +4,7 @@ export default {
       chunkSizeWarningLimit: 1024 * 1024,
       outDir: "../build",
       assetsDir: "./",
-      emptyOutDir: true,
+      emptyOutDir: false,
       rollupOptions: {
         output: {
           entryFileNames: "[name].js",

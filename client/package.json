@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Client of the Tank browsergame",
   "scripts": {
-    "build": "vite build --config=vite.conf.js",
+    "build": "vite build --config=vite.conf.js && cd src/public/assets && npx bestzip ../../../build/assets.zip *",
     "start": "",
     "watch": "npx vite build --watch --config=vite.conf.js"
   },
@@ -19,6 +19,8 @@
   "homepage": "https://github.com/leumasme/tank-game#readme",
   "dependencies": {
     "@types/three": "^0.134.0",
+    "bestzip": "^2.2.0",
+    "fflate": "^0.7.2",
     "three": "^0.135.0",
     "vite": "^2.6.14"
   }
