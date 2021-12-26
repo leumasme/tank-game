@@ -4,7 +4,7 @@ import { Meshable } from './typeutils';
 
 export class Player {
     constructor(m: Meshable) {
-        this.mesh = m;
+        this.mesh = m.clone();
     }
     mesh: Meshable;
 }
