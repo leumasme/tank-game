@@ -50,9 +50,10 @@ import { distanceToFitInView } from "./renderutils";
         if (!lastTime) lastTime = time;
         const delta = time - lastTime;
     
-        renderer.render(scene, camera);
         lastTime = time;
         player.move(delta); // Process controls
+
+        renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
     
