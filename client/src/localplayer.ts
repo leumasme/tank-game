@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Mesh, Group, Vector3 } from "three";
 import { ControlKeys, keyStates } from "./keys";
 import { Player } from "./player";
 import { Meshable } from "./typeutils";
@@ -26,9 +26,20 @@ export class LocalPlayer extends Player {
         }
         if (keyStates[this.controls.RIGHT]) {
             this.mesh.rotateY(-0.002 * delta);
+
         }
-    }
-    shoot() {
+        this.checkCollisions();
         // TODO
     }
+    checkCollisions() {
+        // TODO
+        this.mesh.traverse(child => {
+            if ( i-- > 1) {
+                // console.log(child.name)
+                console.log(child.name)
+            }
+        })
+    }
+    
 }
+let i = 1000;
