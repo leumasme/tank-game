@@ -1,12 +1,13 @@
 import * as T from "three";
-import { playerControls } from "./keys"
-import { loadAll } from "./resource";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { LocalPlayer } from "./localplayer";
-import { distanceToFitInView } from "./renderutils";
-import {Player} from "./player";
+import {playerControls} from "./keys";
+import {loadAll} from "./resource";
+import {RoomEnvironment} from "three/examples/jsm/environments/RoomEnvironment.js";
+import {TankEntityPlayer} from "./entity/tankEntityPlayer";
+import {TankEntity} from "./entity/tankEntity";
+import {Entity} from "./entity/entity";
+import {distanceToFitInView} from "./renderutils";
 
-(async()=>{
+(async () => {
     const loaded = await loadAll();
 
     // Set up the scene
@@ -23,25 +24,28 @@ import {Player} from "./player";
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    let players: LocalPlayer[] = [];
+    let entities: Entity[] = [];
 
-    let player = new LocalPlayer(loaded.objects.tank.scene, playerControls[0]);
-    players.push(player);
+    let player = new TankEntityPlayer(playerControls[0], scene);
+    entities.push(player);
 
-    let testPlayer = new LocalPlayer(loaded.objects.tank.scene, playerControls[1]);
-    players.push(testPlayer);
-    testPlayer.mesh.position.set(0, 0, -10);
+    let testPlayer = new TankEntityPlayer(playerControls[1], scene);
+    testPlayer.rotate(10);
+    testPlayer.move(10);
+    entities.push(testPlayer);
 
-
-    players.forEach(p => {
-        scene.add(p.mesh);
-        scene.add(p.debugBox);
-    });
+    for (let i = 0; i < 100; i++) {
+        const entity = new TankEntity(scene);
+        entity.setPosition(Math.random() * 100 - 50, undefined, Math.random() * 100 - 50);
+        entity.rotate(Math.random() * 360);
+        entities.push(entity);
+        entity.shoot();
+    }
 
 
     // Create ground plane
     const ground = new T.BoxGeometry(100, 0.1, 100);
-    const groundMaterial = new T.MeshStandardMaterial({ color: 0x00ff00 });
+    const groundMaterial = new T.MeshStandardMaterial({color: 0x00ff00});
     const groundMesh = new T.Mesh(ground, groundMaterial);
     groundMesh.position.y = -0.05;
     scene.add(groundMesh);
@@ -60,44 +64,80 @@ import {Player} from "./player";
 
     // Render loop
     let lastTime = 0;
+
+    function checkCollisions() {
+
+        for (const entityKey1 in entities) {
+            const entity1 = entities[entityKey1];
+
+            // For entity idk
+            // for (const entityKey2 in entities) {
+            //     const entity2 = entities[entityKey2];
+            //     if (entity1 !== entity2 && entity1 instanceof CollidableEntity && entity2 instanceof CollidableEntity) {
+            //         if (entity1.collidesWith(entity2)) {
+            //             // entity1.onCollision(entity2);
+            //             // break;
+            //         } else {
+            //             // entity1.endCollision(entity2);
+            //         }
+            //     }
+            // }
+            // For bullets
+            if (entity1 instanceof TankEntity) {
+                for (const bulletKey in entity1.bullets) {
+                    const bullet = entity1.bullets[bulletKey];
+                    for (const entityKey2 in entities) {
+                        const entity2 = entities[entityKey2];
+                        if (entity2 instanceof TankEntityPlayer) {
+                            continue; // Don't collide with player for now
+                        }
+                        if (entity2.alive && entity2 instanceof TankEntity && entity2 !== entity1 && bullet.collidesWith(entity2)) {
+                            entity2.onCollision(bullet);
+                            bullet.onCollision(entity2);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function moveProjectiles(delta: number) {
+        for (const entityKey in entities) {
+            const entity = entities[entityKey];
+            if (entity instanceof TankEntity) {
+                entity.bullets.forEach(bullet => {
+                    bullet.move(delta);
+                });
+            }
+        }
+    }
+
     function render(time: number) {
         if (!lastTime) lastTime = time;
         const delta = time - lastTime;
 
         lastTime = time;
-        player.move(delta); // Process controls
-        testPlayer.move(delta); // Process controls
-
-        players.forEach(p => {
-            p.move(delta);
-            p.debugBox.update()
+        moveProjectiles(delta);
+        checkCollisions();
+        entities.forEach(p => {
+            if (p instanceof TankEntityPlayer) {
+                p.control(delta);
+            }
         });
 
-        // players[1].mesh.lookAt(players[0].mesh.position);
-
-
-        players[0].obb.copy(players[0].obb2);
-        players[1].obb.copy(players[1].obb2);
-        players[0].obb.applyMatrix4(players[0].mesh.matrixWorld);
-        players[1].obb.applyMatrix4(players[1].mesh.matrixWorld);
-
-        if (players[0].obb.intersectsOBB(players[1].obb, Number.EPSILON)){
-            players[0].mesh.material.color.set(0xff0000);
-        } else {
-            players[0].mesh.material.color.set(0x00ff00);
-        }
 
         renderer.render(scene, camera);
         requestAnimationFrame(render);
     }
 
-    
+
     // Handle window resize
     window.addEventListener("resize", () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-    
+
     window.requestAnimationFrame(render);
 })();
