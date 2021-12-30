@@ -21,7 +21,13 @@ export async function loadAll() {
         if (file.endsWith("gltf")) {
             // name without extension
             let name = file.split(".").slice(0, -1).join(".");
-            loaded.objects[name] = await loadGLTF(data);
+            let gltf = await loadGLTF(data);
+            gltf.scene.traverse(child => {
+                if (child.name == "Hidden") {
+                    child.visible = false;
+                }
+            })
+            loaded.objects[name] = gltf;
         } else {
             // TODO: load other resource types
             console.log("Skipping", file);
