@@ -26,16 +26,16 @@ import {distanceToFitInView} from "./renderutils";
 
     let entities: Entity[] = [];
 
-    let player = new TankEntityPlayer(playerControls[0], scene, loaded.objects.tank.scene, `Player2`);
+    let player = new TankEntityPlayer(playerControls[0], scene, loaded.objects.tank.scene);
     entities.push(player);
 
-    let testPlayer = new TankEntityPlayer(playerControls[1], scene, loaded.objects.tank.scene, `Player1`);
+    let testPlayer = new TankEntityPlayer(playerControls[1], scene, loaded.objects.tank.scene);
     testPlayer.rotate(10);
     testPlayer.move(10);
     entities.push(testPlayer);
 
     for (let i = 0; i < 30; i++) {
-        const entity = new TankEntity(scene, loaded.objects.tank.scene, `Tank${i}`);
+        const entity = new TankEntity(scene, loaded.objects.tank.scene);
         entity.setPosition(Math.random() * 100 - 50, undefined, Math.random() * 100 - 50);
 
         entity.rotate(Math.random() * 360);
