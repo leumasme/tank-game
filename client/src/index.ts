@@ -26,20 +26,21 @@ import {distanceToFitInView} from "./renderutils";
 
     let entities: Entity[] = [];
 
-    let player = new TankEntityPlayer(playerControls[0], scene);
+    let player = new TankEntityPlayer(playerControls[0], scene, loaded.objects.tank.scene, `Player2`);
     entities.push(player);
 
-    let testPlayer = new TankEntityPlayer(playerControls[1], scene);
+    let testPlayer = new TankEntityPlayer(playerControls[1], scene, loaded.objects.tank.scene, `Player1`);
     testPlayer.rotate(10);
     testPlayer.move(10);
     entities.push(testPlayer);
 
-    for (let i = 0; i < 100; i++) {
-        const entity = new TankEntity(scene);
+    for (let i = 0; i < 30; i++) {
+        const entity = new TankEntity(scene, loaded.objects.tank.scene, `Tank${i}`);
         entity.setPosition(Math.random() * 100 - 50, undefined, Math.random() * 100 - 50);
+
         entity.rotate(Math.random() * 360);
         entities.push(entity);
-        entity.shoot();
+        // entity.shoot();
     }
 
 
@@ -60,7 +61,9 @@ import {distanceToFitInView} from "./renderutils";
     camera.position.y = distance + 3;
     camera.near = distance - 3;
     camera.far = distance + 10;
+
     camera.lookAt(player.mesh.position);
+
 
     // Render loop
     let lastTime = 0;
@@ -92,9 +95,11 @@ import {distanceToFitInView} from "./renderutils";
                             continue; // Don't collide with player for now
                         }
                         if (entity2.alive && entity2 instanceof TankEntity && entity2 !== entity1 && bullet.collidesWith(entity2)) {
-                            entity2.onCollision(bullet);
                             bullet.onCollision(entity2);
-
+                            entities.forEach(entity => {
+                                if (entity instanceof TankEntity) {
+                                }
+                            });
                         }
                     }
                 }
@@ -113,18 +118,31 @@ import {distanceToFitInView} from "./renderutils";
         }
     }
 
+    let counter = 1;
+
     function render(time: number) {
         if (!lastTime) lastTime = time;
         const delta = time - lastTime;
 
         lastTime = time;
-        moveProjectiles(delta);
-        checkCollisions();
         entities.forEach(p => {
-            if (p instanceof TankEntityPlayer) {
-                p.control(delta);
+            if (p instanceof TankEntity) {
+                p.update(delta);
             }
         });
+
+        // Let random entities shoot
+        counter++;
+        if (counter % 10 === 0) {
+            const _list = entities.filter(value => value instanceof TankEntity && !(value instanceof TankEntityPlayer) && value.alive);
+            const entity = _list[Math.floor(Math.random() * _list.length)];
+            if (entity instanceof TankEntity && _list.length > 3) {
+                entity.rotate(0.1)
+                entity.shoot();
+            }
+        }
+        moveProjectiles(delta);
+        checkCollisions();
 
 
         renderer.render(scene, camera);

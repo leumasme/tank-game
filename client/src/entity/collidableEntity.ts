@@ -16,7 +16,6 @@ export class CollidableEntity extends Entity {
         myOBB.applyMatrix4(this.mesh.matrixWorld);
         let otherOBB = other.obb.clone();
         otherOBB.applyMatrix4(other.mesh.matrixWorld);
-
         return myOBB.intersectsOBB(otherOBB, Number.EPSILON);
     }
 
