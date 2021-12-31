@@ -9,7 +9,6 @@ import {distanceToFitInView} from "./renderutils";
 
 (async () => {
     const loaded = await loadAll();
-
     // Set up the scene
     const scene = new T.Scene();
     const renderer = new T.WebGLRenderer();
@@ -137,8 +136,8 @@ import {distanceToFitInView} from "./renderutils";
             const _list = entities.filter(value => value instanceof TankEntity && !(value instanceof TankEntityPlayer) && value.alive);
             const entity = _list[Math.floor(Math.random() * _list.length)];
             if (entity instanceof TankEntity && _list.length > 3) {
-                entity.rotate(0.1)
-                entity.shoot();
+                // entity.rotate(0.1)
+                // entity.shoot();
             }
         }
         moveProjectiles(delta);
