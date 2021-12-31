@@ -3,11 +3,11 @@ import {Meshable} from "../typeutils";
 // TODO: Add support for multiple components/group meshes
 export class Entity {
 
-    mesh: T.Mesh;
+    mesh: Meshable;
     alive: boolean;
     scene: T.Scene;
 
-    constructor(m: T.Mesh, scene: T.Scene) {
+    constructor(m: Meshable, scene: T.Scene) {
         this.mesh = m.clone();
         scene.add(this.mesh);
         this.alive = true;
@@ -34,6 +34,9 @@ export class Entity {
 
     kill() {
         this.alive = false;
+        this.mesh.visible = false;
         this.scene.remove(this.mesh);
+        console.log("Entity killed");
+
     }
 }
