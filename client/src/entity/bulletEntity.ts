@@ -1,13 +1,13 @@
-import {CollidableEntity} from "./collidableEntity";
-import {TankEntity} from "./tankEntity";
+import { CollidableEntity } from "./collidableEntity";
+import { TankEntity } from "./tankEntity";
 import * as T from "three";
 
 export class BulletEntity extends CollidableEntity {
 
+    static radius = 0.3;
     shooter: TankEntity;
     speed: number;
     moveStep: number;
-    static radius = 0.3
 
     constructor(angle: number, x: number, z: number, y: number, shooter: TankEntity, scene: T.Scene) {
 
@@ -24,7 +24,15 @@ export class BulletEntity extends CollidableEntity {
         this.speed = 5;
     }
 
+
+    kill() {
+        let i = this.shooter.bullets.indexOf(this);
+        this.shooter.bullets.splice(i, 1);
+        super.kill();
+    }
+
     onCollision(collidable: CollidableEntity) {
+
         this.kill();
         collidable.kill();
 
