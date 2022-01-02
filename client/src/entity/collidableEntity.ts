@@ -3,9 +3,8 @@ import { OBB } from "three/examples/jsm/math/OBB";
 import * as T from "three";
 import { Meshable } from "../typeutils";
 
-export class CollidableEntity extends Entity {
+export abstract class CollidableEntity extends Entity {
     obb: OBB[];
-
 
     constructor(mesh: Meshable, scene: T.Scene) {
         super(mesh, scene);
@@ -41,17 +40,7 @@ export class CollidableEntity extends Entity {
         return collied;
     }
 
-
-    endCollision(collidable: CollidableEntity): void {
-    }
-
-
-    onCollision(collidable: CollidableEntity): void {
-    }
-
     update(delta: number): void {
         super.update(delta);
     }
-
-
 }
