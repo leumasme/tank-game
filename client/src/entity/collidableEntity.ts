@@ -6,6 +6,7 @@ import { Meshable } from "../typeutils";
 export class CollidableEntity extends Entity {
     obb: OBB[];
 
+
     constructor(mesh: Meshable, scene: T.Scene) {
         super(mesh, scene);
         this.obb = [];
@@ -19,23 +20,25 @@ export class CollidableEntity extends Entity {
                 this.obb.push(new OBB().fromBox3((m as T.Mesh).geometry.boundingBox as T.Box3));
             });
         }
+
     }
 
     collidesWith(other: CollidableEntity): boolean {
-        this.obb.forEach((obb) => {
+        let collied = false;
+
+        this.obb.forEach((obb, i) => {
             let myOBB = obb.clone();
             myOBB.applyMatrix4(this.mesh.matrixWorld);
-            other.obb.forEach((otherObb) => {
-                // TODO: scorpion fix this
+            other.obb.forEach((otherObb, j) => {
                 let otherOBB = otherObb.clone();
                 otherOBB.applyMatrix4(other.mesh.matrixWorld);
                 if (myOBB.intersectsOBB(otherOBB, Number.EPSILON)) {
-
-                    return true;
+                    collied = true;
                 }
             });
         });
-        return false;
+
+        return collied;
     }
 
 
@@ -44,6 +47,10 @@ export class CollidableEntity extends Entity {
 
 
     onCollision(collidable: CollidableEntity): void {
+    }
+
+    update(delta: number): void {
+        super.update(delta);
     }
 
 

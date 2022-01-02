@@ -4,7 +4,7 @@ import * as T from "three";
 
 export class BulletEntity extends CollidableEntity {
 
-    static radius = 0.3;
+    static radius = .3;
     shooter: TankEntity;
     speed: number;
     moveStep: number;
@@ -21,7 +21,7 @@ export class BulletEntity extends CollidableEntity {
         this.shooter = shooter;
 
         this.moveStep = 0.01;
-        this.speed = 5;
+        this.speed = 0.1;
     }
 
 
@@ -32,19 +32,14 @@ export class BulletEntity extends CollidableEntity {
     }
 
     onCollision(collidable: CollidableEntity) {
-
         this.kill();
         collidable.kill();
-
     }
 
     move(delta: number) {
         if (this.mesh.position.distanceTo(this.scene.position) > 200) {
             this.kill(); // Kill if too far away
         }
-
         super.move(-this.speed * delta * this.moveStep);
     }
-
-
 }

@@ -36,7 +36,6 @@ export class Entity {
         this.alive = false;
         this.mesh.visible = false;
         this.scene.remove(this.mesh);
-        console.log("Entity killed");
 
     }
 }
