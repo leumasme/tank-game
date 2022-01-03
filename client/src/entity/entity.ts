@@ -1,5 +1,5 @@
 import * as T from 'three';
-import {Meshable} from "../typeutils";
+import { Meshable } from "../typeutils";
 // TODO: Add support for multiple components/group meshes
 export abstract class Entity {
     mesh: Meshable;

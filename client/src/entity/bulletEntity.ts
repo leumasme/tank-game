@@ -9,17 +9,17 @@ export class BulletEntity extends CollidableEntity {
     shooter: TankEntity;
     speed: number;
 
-    constructor(angle: number, x: number, z: number, y: number, shooter: TankEntity, scene: T.Scene) {
+    constructor(rotation: T.Euler, x: number, z: number, y: number, shooter: TankEntity, scene: T.Scene) {
         let geometry = new T.SphereGeometry(BulletEntity.radius, 16, 16);
         let material = new T.MeshBasicMaterial({color: 0x000000});
         let mesh = new T.Mesh(geometry, material);
         mesh.position.set(x, y, z);
-        mesh.rotation.copy(shooter.mesh.rotation);
+        mesh.rotation.copy(rotation);
         super(mesh, scene);
 
         this.shooter = shooter;
 
-        this.speed = 5;
+        this.speed = 0.05;
     }
 
     kill() {

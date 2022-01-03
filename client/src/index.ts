@@ -4,7 +4,6 @@ import { loadAll } from "./resource";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { TankEntityPlayer } from "./entity/tankEntityPlayer";
 import { TankEntity } from "./entity/tankEntity";
-import { Entity } from "./entity/entity";
 import { distanceToFitInView } from "./renderutils";
 
 (async () => {

@@ -15,7 +15,7 @@ export abstract class CollidableEntity extends Entity {
         } else if (this.mesh instanceof T.Group) {
             // TODO: Temm change this to loop through all children and only use the ones that contain hidden | Traverse?
             for (let child of this.mesh.children[0].children.find(x=> x.name == "Hidden")!.children) {
-                if (child instanceof T.Mesh && child.name == "hitbox") {
+                if (child instanceof T.Mesh && child.name.startsWith("hitbox")) {
                     child.geometry.computeBoundingBox();
                     this.obb.push(new OBB().fromBox3(child.geometry.boundingBox!));
                 }
@@ -25,20 +25,15 @@ export abstract class CollidableEntity extends Entity {
     }
 
     collidesWith(other: CollidableEntity): boolean {
-        let collied = false;
-
-        this.obb.forEach((obb, i) => {
-            let myOBB = obb.clone();
-            myOBB.applyMatrix4(this.mesh.matrixWorld);
-            other.obb.forEach((otherObb, j) => {
-                let otherOBB = otherObb.clone();
-                otherOBB.applyMatrix4(other.mesh.matrixWorld);
-                if (myOBB.intersectsOBB(otherOBB, Number.EPSILON)) {
-                    collied = true;
-                }
-            });
-        });
-
-        return collied;
+        for (let obb of this.obb) {
+            obb = obb.clone();
+            obb.applyMatrix4(this.mesh.matrixWorld);
+            for (let otherObb of other.obb) {
+                otherObb = otherObb.clone();
+                otherObb.applyMatrix4(other.mesh.matrixWorld);
+                if (obb.intersectsOBB(otherObb, Number.EPSILON)) return true;
+            }
+        }
+        return false;
     }
 }

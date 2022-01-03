@@ -1,7 +1,7 @@
-import {TankEntity} from "./tankEntity";
-import {ControlKeys, keyStates} from "../keys";
+import { TankEntity } from "./tankEntity";
+import { ControlKeys, keyStates } from "../keys";
 import * as T from "three";
-import {Meshable} from "../typeutils";
+import { Meshable } from "../typeutils";
 
 export class TankEntityPlayer extends TankEntity {
     controls: ControlKeys;
@@ -32,7 +32,7 @@ export class TankEntityPlayer extends TankEntity {
         if (keyStates[this.controls.SHOOT] && this.shotDelay <= 0) {
             this.shoot();
             this.shotDelay = 1000;
-        } else console.log(this.shotDelay, delta)
+        }
         this.shotDelay -= delta;
         super.update(delta);
     }
