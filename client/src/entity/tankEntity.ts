@@ -10,7 +10,7 @@ export class TankEntity extends CollidableEntity {
         obj = obj.clone();
         super(obj, scene);
         this.bullets = [];
-        this.mesh.scale.set(4, 4, 4); // Larger y/height to make it easier for the bullets to hit
+        this.mesh.scale.set(4, 4, 4);
     }
 
     // TODO: find out why turret is not registering collisions
@@ -21,5 +21,7 @@ export class TankEntity extends CollidableEntity {
         this.bullets.push(bullet);
     }
 
-
+    update(delta: number) {
+        // TODO: AI behavior?
+    }
 }

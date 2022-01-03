@@ -11,13 +11,15 @@ export abstract class CollidableEntity extends Entity {
         this.obb = [];
         if (this.mesh instanceof T.Mesh) {
             this.mesh.geometry.computeBoundingBox();
-            this.obb.push(new OBB().fromBox3(this.mesh.geometry.boundingBox as T.Box3));
+            this.obb.push(new OBB().fromBox3(this.mesh.geometry.boundingBox!));
         } else if (this.mesh instanceof T.Group) {
             // TODO: Temm change this to loop through all children and only use the ones that contain hidden | Traverse?
-            this.mesh.children[0].children[4].children.forEach(m => {
-                (m as T.Mesh).geometry.computeBoundingBox();
-                this.obb.push(new OBB().fromBox3((m as T.Mesh).geometry.boundingBox as T.Box3));
-            });
+            for (let child of this.mesh.children[0].children.find(x=> x.name == "Hidden")!.children) {
+                if (child instanceof T.Mesh && child.name == "hitbox") {
+                    child.geometry.computeBoundingBox();
+                    this.obb.push(new OBB().fromBox3(child.geometry.boundingBox!));
+                }
+            }
         }
 
     }
@@ -38,9 +40,5 @@ export abstract class CollidableEntity extends Entity {
         });
 
         return collied;
-    }
-
-    update(delta: number): void {
-        super.update(delta);
     }
 }

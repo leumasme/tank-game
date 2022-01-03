@@ -2,9 +2,7 @@ import {TankEntity} from "./tankEntity";
 import {ControlKeys, keyStates} from "../keys";
 import * as T from "three";
 import {Meshable} from "../typeutils";
-// TODO: Use 3d model
-// TODO: Add barrel as mesh
-// TODO: Add base as mesh
+
 export class TankEntityPlayer extends TankEntity {
     controls: ControlKeys;
     speed: number = 0.8;
@@ -16,6 +14,7 @@ export class TankEntityPlayer extends TankEntity {
         this.controls = controls;
     }
 
+    shotDelay = 0;
     update(delta: number): void {
         if (keyStates[this.controls.FORWARD]) {
             this.move(-this.speed * delta * this.moveStep);
@@ -30,9 +29,11 @@ export class TankEntityPlayer extends TankEntity {
             this.rotate(-this.rotationStep * delta);
         }
 
-        if (keyStates[this.controls.SHOOT]) {
+        if (keyStates[this.controls.SHOOT] && this.shotDelay <= 0) {
             this.shoot();
-        }
+            this.shotDelay = 1000;
+        } else console.log(this.shotDelay, delta)
+        this.shotDelay -= delta;
         super.update(delta);
     }
 }
