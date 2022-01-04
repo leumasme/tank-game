@@ -29,11 +29,11 @@ export class TankEntityPlayer extends TankEntity {
             this.rotate(-this.rotationStep * delta);
         }
 
+        this.shotDelay -= delta;
         if (keyStates[this.controls.SHOOT] && this.shotDelay <= 0) {
             this.shoot();
             this.shotDelay = 1000;
         }
-        this.shotDelay -= delta;
         super.update(delta);
     }
 }

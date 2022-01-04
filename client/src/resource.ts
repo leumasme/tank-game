@@ -7,9 +7,9 @@ function loadGLTF(data: ArrayBuffer): Promise<GLTF> {
         objLoader.parse(data, "", resolve, reject);
     });
 }
-
+export type LoadedResources = { objects: { [key: string]: GLTF } };
 export async function loadAll() {
-    let loaded = { objects: {} } as { objects: { [key: string]: GLTF } };
+    let loaded = { objects: {} } as LoadedResources;
     let buffer = await (await fetch("assets.zip")).arrayBuffer();
 
     console.time("unzip");

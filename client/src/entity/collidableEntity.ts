@@ -13,7 +13,6 @@ export abstract class CollidableEntity extends Entity {
             this.mesh.geometry.computeBoundingBox();
             this.obb.push(new OBB().fromBox3(this.mesh.geometry.boundingBox!));
         } else if (this.mesh instanceof T.Group) {
-            // TODO: Temm change this to loop through all children and only use the ones that contain hidden | Traverse?
             for (let child of this.mesh.children[0].children.find(x=> x.name == "Hidden")!.children) {
                 if (child instanceof T.Mesh && child.name.startsWith("hitbox")) {
                     child.geometry.computeBoundingBox();
